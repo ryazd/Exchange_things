@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if mes %}
+    <div class="mes {{ color }}">
+        <p>{{ mes }}</p>
+    </div>
+    {% endif %}
+    {% if form_visible %}
+    <form method="post">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <input type="submit" value="Предложить обмен">
+    </form>
+    {% endif %}    
+{% endblock %}

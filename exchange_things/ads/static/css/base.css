@@ -1,0 +1,102 @@
+.accept {
+    background-color: rgba(42, 194, 42, 0.75);
+}
+
+.reject {
+    background-color: rgb(165, 20, 20, 0.75);
+}
+
+.accept:hover{
+    background-color: rgba(42, 194, 42, 0.45);
+}
+
+
+.reject:hover{
+    background-color: rgb(165, 20, 20, 0.45);
+}
+
+.menu{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 10%;
+    margin-right: 1%;
+    height: 100%;
+}
+
+#header {
+    background-color: rgba(52, 94, 209, 0.507);
+    height: 40px;
+}
+
+.menu a {
+    text-decoration: none;
+    color: black;
+}
+
+.menu li {
+    list-style-type: none;
+}
+
+.content{
+    margin-left: 5%;
+    margin-right: 1%;
+    margin-top: 20px;
+}
+
+.content-exchange, .content-ads {
+    display: flex;
+    justify-content: space-between;
+}
+
+.pages .selected {
+    font-weight: 900;
+}
+
+.pages {
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.mes {
+    
+    display: flex;
+    padding-left: 5px;
+}
+
+.green {
+    background-color: rgba(22, 168, 22, 0.589);
+}
+
+.red {
+    background-color: rgba(179, 17, 17, 0.671)
+}
+
+.name {
+    font-size: small;
+    color:rgba(10, 87, 3, 0.774);
+}
+
+.pages li:hover, .login-logout li:hover {
+    scale: 0.98;
+}
+
+
+.sidebar li{
+    list-style-type: none;
+    margin-bottom: 1px;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: black;
+}
+
+.sidebar ul {
+    padding: 0;
+}
+
+.sidebar .selected {
+    color: grey;
+}

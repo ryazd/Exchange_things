@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="content-ads">
+    <div class="ads">
+    {% for ad in ads %}
+        <p>ID: <b>{{ ad.id }}</b></p>
+        <p>
+            Пользователь: <b>
+                <a class='user-link' href="{% if request.user == ad.user %}{% url 'get_my_ads' %}{% else %}{% url 'get_user_ads' ad.user.id %}{% endif %}">
+                    {{ ad.user }} {% if request.user == ad.user %}(Вы){% endif %}
+                </a>
+            </b></p>
+        <p>Название: <b>{{ ad.title }}</b></p>
+        <p>Описание: <b>{{ ad.description }}</b></p>
+        <p>Изображение: <b>{{ ad.image }}</b></p>
+        <p>Состояние: <b>{{ ad.condition }}</b></p>
+        <p>Категория: <b>{{ ad.category }}</b></p>
+        <p>Дата создания: <b>{{ ad.created_at }}</b></p>
+        {% if request.user.is_authenticated %}
+            {% if ad.user != request.user %}
+                <a href="{% url 'create_exchange' ad.id %}">
+                    <button>Предложить обмен</button>
+                </a>
+            {% else %}
+                <a href="{% url 'edit_ad' ad.id %}"><button>Редактировать</button></a>
+                <a href="{% url 'delete_ad' ad.id %}"><button>Удалить</button></a>
+            {% endif %}
+        {% else %}
+            <p><a href="{% url 'login' %}">Авторизуйтесь, чтобы предложить обмен</a></p>
+        {% endif %}
+        <hr>
+    {% empty %}
+        <h2>По вашему запросу ничего не найдено</h2>
+    {% endfor %}
+    <p>
+        {% if ads.has_previous %}<a href="?{% if request.GET.condition %}condition={{request.GET.condition }}&{% endif %}{% if category %}category={{ category }}&{% endif %}{% if search %}search={{ search }}&{% endif %}page={{ ads.previous_page_number }}"> Предыдущая </a>{% endif %}
+        {{ ads.number }} из {{ num_pages }}
+        {% if ads.has_next %}<a href="?{% if request.GET.condition %}condition={{request.GET.condition }}&{% endif %}{% if category %}category={{ category }}&{% endif %}{% if search %}search={{ search }}&{% endif %}page={{ ads.next_page_number }}"> Следующая </a>{% endif %}
+    </p>
+    </div>
+    <div class="sidebar">
+        <h3>Фильтр</h3>
+        <details open>
+            <summary><b>Состояние</b></summary>
+            <ul>
+                <li><a href="{% url 'get_ads' %}?{% if category %}category={{ category }}&{% endif %}{% if search %}search={{ search }}{% endif %}" {% if request.GET.condition == None %}class="selected"{% endif %}>Все</a></li>
+                <li><a href="?condition=новый&{% if category %}category={{ category }}&{% endif %}{% if search %}search={{ search }}{% endif %}" {% if request.GET.condition == 'новый' %}class="selected"{% endif %}>новый</a></li>
+                <li><a href="?condition=б/у&{% if category %}&category={{ category }}&{% endif %}{% if search %}search={{ search }}{% endif %}" {% if request.GET.condition == 'б/у' %}class="selected"{% endif %}>б/у</a></li>
+            </ul>
+        </details>
+        <details open>
+            <summary><b>Категория</b></summary>
+            <form method="post" action="{% url 'get_ads' %}?{% if request.GET.condition %}condition={{ request.GET.condition }}&{% endif %}{% if search %}search={{ search }}{% endif %}">
+                {% csrf_token %}
+                <p><input type="text" name="category" {% if category %}value="{{ category }}"{% endif %}><p>
+                <p><input type="submit" value="Поиск"></p>
+            </form>
+        </details>
+        <details open>
+            <summary><b>Поиск в названии</b></summary>
+            <form method="post" action="{% url 'get_ads' %}?{% if request.GET.condition %}condition={{ request.GET.condition }}&{% endif %}{% if category %}category={{ category }}{% endif %}">
+                {% csrf_token %}
+                <p><input type="text" name="search" {% if search %}value="{{ search }}"{% endif %}><p>
+                <p><input type="submit" value="Поиск"></p>
+            </form>
+        </details>
+    </div>
+</div>
+{% endblock %}

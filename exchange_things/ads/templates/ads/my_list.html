@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <a href="{% url 'create_ad' %}">
+        <button>Создать объявление</button>
+    </a>
+    {% for ad in ads %}
+        <p>ID: <b>{{ ad.id }}</b></p>
+        <p>
+            Пользователь: <b>
+                    {{ ad.user }}
+            </b></p>
+        <p>Название: <b>{{ ad.title }}</b></p>
+        <p>Описание: <b>{{ ad.description }}</b></p>
+        <p>Изображение: <b>{{ ad.image }}</b></p>
+        <p>Состояние: <b>{{ ad.condition }}</b></p>
+        <p>Дата создания: <b>{{ ad.created_at }}</b></p>
+        {% if ad.user != request.user %}
+            <button>Предложить обмен</button>
+        {% else %}
+            <a href="{% url 'edit_ad' ad.id %}"><button>Редактировать</button></a>
+            <a href="{% url 'delete_ad' ad.id %}"><button>Удалить</button></a>
+        {% endif %}
+        <hr>
+    {% empty %}
+        <h3>У вас пока нет объявлений</h3>
+    {% endfor %}
+{% endblock %}

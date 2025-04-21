@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if mes %}
+    <div class="mes {{ color }}">
+        <p>{{ mes }}</p>
+    </div>
+    {% endif %}
+<div class="content-exchange">
+        <div class="exchenges_in">
+            <h2>Входящие предложения</h2>
+            {% for exchange in exchenges_in %}
+                <p>
+                    <a href="{% url 'get_user_ads' exchange.sender.id %}">{{ exchange.sender }}</a>
+                     предлагае 
+                    <b>{{ exchange.ad_sender }}</b> в обмен на <b>{{ exchange.ad_receiver }}</b>
+                </p>
+                <p>Статус: {{ exchange.status }}</p>
+                {% if exchange.status == 'Ожидает' %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="submit" name="new_status" class="accept" value="Принять">
+                        <input type="submit" name="new_status" class="reject" value="Отклонить">
+                        <input type="hidden" name="id_exchange" value={{ exchange.id }}>
+                    </form>
+                {% endif %}
+                <hr>
+            {% empty %}
+                <p>У вас еще нет предложений для обмена.</p>
+            {% endfor %}
+        </div>
+        <div class="exchenges_out">
+            <h2>Исходящие предложения</h2>
+            {% for exchange in exchenges_out %}
+                <p>
+                    Вы хотите получить от 
+                    <a href="{% url 'get_user_ads' exchange.receiver.id %}">{{ exchange.receiver }}</a>
+                     его <b>{{ exchange.ad_receiver }}</b>
+                    в обмен на <b>{{ exchange.ad_sender }}</b>
+                </p>
+                <p>Статус: {{ exchange.status }}</p>
+                <hr>
+            {% empty %}
+                <p>Вы пока никому не предлагали меняться.</p>
+            {% endfor %}
+        </div>
+        <div class='sidebar'>
+            <h3>Фильтр</h3>
+            <details open>
+                <summary><b>Статус</b></summary>
+                <ul>
+                    <li><a href="{% url 'get_exchange' %}{% if sender %}?sender={{ sender }}{% endif %}" {% if request.GET.status == None or request.GET.status == 'Все' %}class="selected"{% endif %}>Все</a></li>
+                    <li><a href="?status=Ожидает{% if sender %}&sender={{ sender }}{% endif %}" {% if request.GET.status == 'Ожидает' %}class="selected"{% endif %}>Ожидает</a></li>
+                    <li><a href="?status=Отклонена{% if sender %}&sender={{ sender }}{% endif %}" {% if request.GET.status == 'Отклонена' %}class="selected"{% endif %}>Отклонена</a></li>
+                    <li><a href="?status=Принята{% if sender %}&sender={{ sender }}{% endif %}" {% if request.GET.status == 'Принята' %}class="selected"{% endif %}>Принята</a></li>
+                </ul>
+            </details>
+            <details open>
+                <summary><b>ID Отправителя</b></summary>
+                <ul>
+                    <li><a href="{% url 'get_exchange' %}{% if status %}?status={{ status }}{% endif %}" {% if request.GET.user == None %}class="selected"{% endif %}>Все</a></li>
+                    {% for user in users %}
+                        <li>
+                            <a href="?{% if status %}status={{ status }}&{% endif %}user={{ user }}"{% if request.GET.user == user|stringformat:'i' %}class="selected"{% endif %}>
+                              {{ user }}  
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </details>
+        </div>
+    </div>
+{% endblock %}

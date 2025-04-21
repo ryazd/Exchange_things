@@ -1,0 +1,55 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>
+            {% block title %}
+                Обмен вещами
+            {% endblock %}
+        </title>
+        <link href="{% static 'css/base.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <div id="header">
+            <ul class="menu">
+                <div class="pages">
+                    <li>
+                        <a {% if section == "Объявления" %}class='selected'{% endif %} href="{% url 'get_ads' %}">
+                            Объявления
+                        </a>
+                    </li>
+                    {% if request.user.is_authenticated %}
+                        <li>
+                            <a {% if section == "Мои объявления" %}class='selected'{% endif %} href="{% url 'get_my_ads' %}">
+                                Мои объявления
+                            </a>
+                        </li>
+                        <li>
+                            <a {% if section == 'Обмены' %}class='selected'{% endif %} href="{% url 'get_exchange' %}">
+                                Обмены
+                            </a>
+                        </li>
+                    {% endif %}
+                </div>
+                <div class="login-logout">
+                    {% if request.user.is_authenticated %}
+                        <li>
+                            <u class="name">Привет, <b>{{ request.user }}</b></u>
+                            <a href="{% url 'logout' %}">Выйти</a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{% url 'login' %}">Войти</a>
+                        </li>
+                    {% endif %}
+                </div>
+            </ul>
+        </div>
+        <div class="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </body>
+</html>

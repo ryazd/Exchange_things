@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if mes %}
+    <div class="mes {{ color }}">
+        <p>{{ mes }}</p>
+    </div>
+    {% endif %}
+    {% if ad.id %}
+        <p>Вы точно хотите удалить?</p>
+        <p>ID: <b>{{ ad.id }}</b></p>
+        <p>
+            Пользователь: <b>{{ ad.user }}</b>
+        </p>
+        <p>Название: <b>{{ ad.title }}</b></p>
+        <p>Описание: <b>{{ ad.description }}</b></p>
+        <p>Изображение: <b>{{ ad.image }}</b></p>
+        <p>Состояние: <b>{{ ad.condition }}</b></p>
+        <p>Дата создания: <b>{{ ad.created_at }}</b></p>
+        <form method="post">
+            {% csrf_token %}
+            <input id="delete-btn" type="submit" value="Удалить">
+        </form>
+    {% endif %}
+{% endblock %}

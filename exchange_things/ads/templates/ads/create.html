@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if mes %}
+    <div class="mes {{ color }}">
+        <p>{{ mes }}</p>
+    </div>
+    {% endif %}
+    <form method="post">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <input type="submit" value="Добавить">
+    </form>
+{% endblock %}

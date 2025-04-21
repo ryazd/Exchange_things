@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+    <h1>Вход</h1>
+    <div class="module">
+        {% if form.errors %}
+            <p>Имя пользователя или пароль не совпадают. Попробуйте снова.</p>
+        {% else %}
+            <p>Пожалуйста, используйте форму для входа:</p>
+        {% endif %}
+        <div class="login-form">
+            <form action="{% url 'login' %}" method="post">
+                {{ form.as_p }}
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{% url 'get_ads' %}" />
+                <p><input type="submit" value="Войти"></p>
+            </form>
+        </div>
+    </div>
+{% endblock %}
