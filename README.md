@@ -15,7 +15,7 @@ _Описание задачи:_
 * ![exchenges.jpg](README%2Fexchenges.jpg)
 
 ### Порядок запуска
-* Клонировать: `git clone https://github.com/ryazd/TRON_FAST_API.git`
+* Клонировать: `git clone https://github.com/ryazd/Exchange_things.git`
 * Установить зависимости: `pip install -r requirements.txt`
 * Запустить сервис: `python manage.py runserver`
 * В браузере перейти по адресу: `http://127.0.0.1:8000/ads`
